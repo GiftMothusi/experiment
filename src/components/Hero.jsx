@@ -74,7 +74,11 @@ const Hero = () => {
                     <p className="mb-5 max-w-64 font-robert-regular text-blue-100">
                         Enter the Metagame layer <br/> Unleash the play Economy
                     </p>
-                    <Button/>
+                    <Button
+                        id="watch-trailer"
+                        title="Watch Trailer"
+                        leftIcon={{}}
+                    />
                 </div>
            </div>
         </div>
