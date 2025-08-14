@@ -1,39 +1,63 @@
 import React,{useEffect, useRef, useState} from 'react'
-import { useGSAP } from '@gsap/react'
-import gsap from 'gsap'
 import Button from './Button'
 import { TiLocationArrow } from 'react-icons/ti'
+import { useWindowScroll } from 'react-use'
+import { useGSAP } from '@gsap/react'
+import gsap from 'gsap'
 
 
 const navItems = ["Nexus", "Vault", "Prologue","About", "Contact"]
 
 const Navbar = () => {
-   
- const [isAudioPlaying, setIsAudioPlaying] = useState(false)
- const [isIndicatorActive, setIsIndicatorActive] = useState(false)
+    const {y: currentScrollY} = useWindowScroll()
+    const [isAudioPlaying, setIsAudioPlaying] = useState(false)
+    const [isIndicatorActive, setIsIndicatorActive] = useState(false)
+    const [lastScrollY, setLastScrollY] = useState(0)
+    const [isNavbarVisible, setIsNavbarVisible] = useState(true)
 
- const containerRef = useRef(null)
- const audioElementRef = useRef(null)
- 
- useGSAP(()=>{
-    
- })
+    const navContainerRef = useRef(null)
+    const audioElementRef = useRef(null)
 
- const toggleAudioIndicator = () =>{
-   setIsAudioPlaying((prev)=>!prev)
-   setIsIndicatorActive((prev)=>!prev)
- }
 
- useEffect(()=>{
-    if(isAudioPlaying){
-        audioElementRef.current.play()
-    }else{
-        audioElementRef.current.pause()
+    const toggleAudioIndicator = () =>{
+    setIsAudioPlaying((prev)=>!prev)
+    setIsIndicatorActive((prev)=>!prev)
     }
- },[isAudioPlaying])
+
+    useEffect(()=>{
+        if(isAudioPlaying){
+            audioElementRef.current.play()
+        }else{
+            audioElementRef.current.pause()
+        }
+    },[isAudioPlaying])
+
+    useEffect(()=>{
+    if(currentScrollY === 0){
+        setIsNavbarVisible(true)
+        navContainerRef.current.classList.remove("floating-nav")
+    }else if(currentScrollY > lastScrollY){
+        setIsNavbarVisible(false)
+        navContainerRef.current.classList.add("floating-nav")
+    }else if(currentScrollY < lastScrollY){
+        setIsNavbarVisible(true)
+        navContainerRef.current.classList.add("floating-nav")
+    }
+    setLastScrollY(currentScrollY) 
+    },[currentScrollY,lastScrollY])
+
+    useEffect(()=>{
+        gsap.to(navContainerRef.current,{
+            y: isNavbarVisible ? 0 : -100,
+            opacity: isNavbarVisible ? 1 : 0,
+            duration:0.2,
+        })
+    },[isNavbarVisible])
+
+
 
   return (
-    <div ref={containerRef} className="fixed inset-x-0 top-4 z-50 h-16 border-none transition-all duration-700 sm:inset-x-6">
+    <div ref={navContainerRef} className="fixed inset-x-0 top-4 z-50 h-16 border-none transition-all duration-700 sm:inset-x-6">
         <header className="absolute top-1/2 w-full -translate-y-1/2">
             <nav className="flex size-full items-center justify-between p-4">
                 {/**Left side of the navbar */}
