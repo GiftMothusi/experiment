@@ -78,7 +78,7 @@ const Navbar = () => {
                       ))}
                     </div>
                     <button
-                        className="ml-10 flex items-center space-x-0.5"
+                        className="ml-10 flex items-center space-x-0.5 cursor-pointer"
                         onClick={toggleAudioIndicator}
                     >
                         <audio ref={audioElementRef} className="hidden" src="audio/loop.mp3" loop/>
