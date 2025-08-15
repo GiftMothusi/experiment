@@ -2,8 +2,8 @@ import React,{useEffect, useRef, useState} from 'react'
 import Button from './Button'
 import { TiLocationArrow } from 'react-icons/ti'
 import { useWindowScroll } from 'react-use'
-import { useGSAP } from '@gsap/react'
 import gsap from 'gsap'
+import ProductsMenu from './ProductsMenu'
 
 
 const navItems = ["Nexus", "Vault", "Prologue","About", "Contact"]
@@ -14,6 +14,7 @@ const Navbar = () => {
     const [isIndicatorActive, setIsIndicatorActive] = useState(false)
     const [lastScrollY, setLastScrollY] = useState(0)
     const [isNavbarVisible, setIsNavbarVisible] = useState(true)
+    const [isProductsMenuOpen, setIsProductsMenuOpen] = useState(false)
 
     const navContainerRef = useRef(null)
     const audioElementRef = useRef(null)
@@ -22,6 +23,14 @@ const Navbar = () => {
     const toggleAudioIndicator = () =>{
     setIsAudioPlaying((prev)=>!prev)
     setIsIndicatorActive((prev)=>!prev)
+    }
+
+    const handleProductsClick = () => {
+        setIsProductsMenuOpen(true)
+    }
+
+    const handleProductsMenuClose = () => {
+        setIsProductsMenuOpen(false)
     }
 
     useEffect(()=>{
@@ -54,46 +63,67 @@ const Navbar = () => {
         })
     },[isNavbarVisible])
 
+     // Prevent body scroll when menu is open
+     useEffect(() => {
+        if (isProductsMenuOpen) {
+            document.body.style.overflow = 'hidden'
+        } else {
+            document.body.style.overflow = 'unset'
+        }
+        
+        return () => {
+            document.body.style.overflow = 'unset'
+        }
+    }, [isProductsMenuOpen])
+
 
 
   return (
-    <div ref={navContainerRef} className="fixed inset-x-0 top-4 z-50 h-16 border-none transition-all duration-700 sm:inset-x-6">
-        <header className="absolute top-1/2 w-full -translate-y-1/2">
-            <nav className="flex size-full items-center justify-between p-4">
-                {/**Left side of the navbar */}
-                <div className="flex items-center gap-7">
-                    <img src="img/zentry.png" alt="logo" className='w-10'/>
-                    <Button
-                        id="product-button"
-                        title="Products"
-                        rightIcon={<TiLocationArrow/>}
-                        containerClass="bg-blue-50 md:flex hidden items-center justify-center gap-1"
-                    />
-                </div>
-                {/**Right side of the navbar */}
-                <div className="flex h-full items-center">
-                    <div className="hidden md:block">
-                      {navItems.map((item)=>(
-                        <a key={item} href={`#${item.toLowerCase()}`} className="nav-hover-btn">{item}</a>
-                      ))}
+    <>
+        <div ref={navContainerRef} className="fixed inset-x-0 top-4 z-50 h-16 border-none transition-all duration-700 sm:inset-x-6">
+            <header className="absolute top-1/2 w-full -translate-y-1/2">
+                <nav className="flex size-full items-center justify-between p-4">
+                    {/**Left side of the navbar */}
+                    <div className="flex items-center gap-7">
+                        <img src="img/zentry.png" alt="logo" className='w-10'/>
+                        <Button
+                            id="product-button"
+                            title="Products"
+                            rightIcon={<TiLocationArrow/>}
+                            containerClass="bg-blue-50 md:flex hidden items-center justify-center gap-1"
+                            onClick={handleProductsClick}
+                        />
                     </div>
-                    <button
-                        className="ml-10 flex items-center space-x-0.5 cursor-pointer"
-                        onClick={toggleAudioIndicator}
-                    >
-                        <audio ref={audioElementRef} className="hidden" src="audio/loop.mp3" loop/>
-                            {[1,2,3,4].map((bar)=>(
-                                <div key={bar} className={`indicator-line ${isIndicatorActive ? "active" : ""}`}
-                                    style={{
-                                        animationDelay: `${bar * 0.1}s`
-                                    }}
-                                />
-                            ))}
-                    </button>
-                </div>
-            </nav>
-        </header>
-    </div>
+                    {/**Right side of the navbar */}
+                    <div className="flex h-full items-center">
+                        <div className="hidden md:block">
+                        {navItems.map((item)=>(
+                            <a key={item} href={`#${item.toLowerCase()}`} className="nav-hover-btn">{item}</a>
+                        ))}
+                        </div>
+                        <button
+                            className="ml-10 flex items-center space-x-0.5 cursor-pointer"
+                            onClick={toggleAudioIndicator}
+                        >
+                            <audio ref={audioElementRef} className="hidden" src="audio/loop.mp3" loop/>
+                                {[1,2,3,4].map((bar)=>(
+                                    <div key={bar} className={`indicator-line ${isIndicatorActive ? "active" : ""}`}
+                                        style={{
+                                            animationDelay: `${bar * 0.1}s`
+                                        }}
+                                    />
+                                ))}
+                        </button>
+                    </div>
+                </nav>
+            </header>
+        </div>
+        {/* Products Menu Overlay */}
+        <ProductsMenu 
+            isOpen={isProductsMenuOpen} 
+            onClose={handleProductsMenuClose}
+        />
+    </>
   )
 }
 

@@ -260,6 +260,129 @@ body {
     animation: wobble2 var(--uib-speed) infinite ease-in-out;
 }
 
+/**Products Menu Styles*/
+
+/* Products Menu Overlay Styles */
+.products-menu-overlay {
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+  }
+  
+  /* Enhanced menu item hover effects */
+  .menu-item-hover {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  
+  .menu-item-hover:hover {
+    transform: translateX(8px);
+  }
+  
+  /* Glassmorphism effect for the image container */
+  .glass-effect {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+  }
+  
+  /* Custom scrollbar for the menu (if needed) */
+  .products-menu::-webkit-scrollbar {
+    width: 6px;
+  }
+  
+  .products-menu::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.1);
+  }
+  
+  .products-menu::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 3px;
+  }
+  
+  .products-menu::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.5);
+  }
+  
+  /* Prevent text selection in the menu */
+  .products-menu {
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+  }
+  
+  /* Enhanced close button hover effect */
+  .close-button {
+    transition: all 0.3s ease;
+  }
+  
+  .close-button:hover {
+    transform: rotate(90deg) scale(1.1);
+    background: rgba(255, 255, 255, 0.2);
+  }
+  
+  /* Mobile responsive adjustments */
+  @media (max-width: 768px) {
+    .products-menu-content {
+      padding-left: 2rem;
+      padding-right: 2rem;
+    }
+    
+    .products-menu-title {
+      font-size: 2.5rem;
+    }
+    
+    .products-menu-item {
+      font-size: 2rem;
+    }
+  }
+  
+  /* Smooth entrance animation for menu items */
+  .menu-item-stagger {
+    opacity: 0;
+    transform: translateY(30px);
+    animation: menuItemEnter 0.6s ease forwards;
+  }
+  
+  .menu-item-stagger:nth-child(1) { animation-delay: 0.1s; }
+  .menu-item-stagger:nth-child(2) { animation-delay: 0.2s; }
+  .menu-item-stagger:nth-child(3) { animation-delay: 0.3s; }
+  .menu-item-stagger:nth-child(4) { animation-delay: 0.4s; }
+  
+  @keyframes menuItemEnter {
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  /* Gradient text effect for active menu item */
+  .gradient-text {
+    background: linear-gradient(135deg, #60a5fa, #a78bfa);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+/*********END*******/
+
+/**********Product Menu Key Frames**********/
+/* Custom pulse animation for status badges */
+@keyframes pulse-glow {
+    0%, 100% {
+      box-shadow: 0 0 5px currentColor;
+    }
+    50% {
+      box-shadow: 0 0 15px currentColor, 0 0 25px currentColor;
+    }
+  }
+  
+  .status-badge {
+    animation: pulse-glow 2s infinite;
+  }
+
+/***********END*****************************/
+
 @keyframes spin78236 {
     0% {
       transform: rotate(0deg);
